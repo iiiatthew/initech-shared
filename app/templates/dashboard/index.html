@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Tab Navigation -->
+    <div class="border-b border-gray-200">
+        <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+            <button 
+                hx-get="/dashboard/users" 
+                hx-target="#tab-content" 
+                hx-push-url="true"
+                hx-trigger="click{% if not initial_content %}, load{% endif %}"
+                class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+                data-tab="users">
+                Users
+            </button>
+            <button 
+                hx-get="/dashboard/roles" 
+                hx-target="#tab-content" 
+                hx-push-url="true"
+                class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+                data-tab="roles">
+                Roles
+            </button>
+            <button 
+                hx-get="/dashboard/secrets" 
+                hx-target="#tab-content" 
+                hx-push-url="true"
+                class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+                data-tab="secrets">
+                Secrets
+            </button>
+        </nav>
+    </div>
+
+    <!-- Tab Content -->
+    <div id="tab-content" class="mt-6">
+        {% if initial_content %}
+            {{ initial_content|safe }}
+        {% else %}
+            <!-- Content will be loaded here -->
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Handle tab styling
+    document.body.addEventListener('htmx:afterSwap', function(event) {
+        if (event.detail.target.id === 'tab-content') {
+            // Update active tab styling
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('border-indigo-500', 'text-indigo-600');
+                btn.classList.add('border-transparent', 'text-gray-500');
+            });
+            
+            // Find and style the active tab
+            const path = window.location.pathname;
+            let activeTab = '{{ active_tab|default("users") }}';
+            if (path.includes('roles')) activeTab = 'roles';
+            else if (path.includes('secrets')) activeTab = 'secrets';
+            
+            const activeButton = document.querySelector(`[data-tab="${activeTab}"]`);
+            if (activeButton) {
+                activeButton.classList.remove('border-transparent', 'text-gray-500');
+                activeButton.classList.add('border-indigo-500', 'text-indigo-600');
+            }
+        }
+    });
+    
+    // Set initial active tab on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        const path = window.location.pathname;
+        let activeTab = '{{ active_tab|default("users") }}';
+        if (path.includes('roles')) activeTab = 'roles';
+        else if (path.includes('secrets')) activeTab = 'secrets';
+        
+        const activeButton = document.querySelector(`[data-tab="${activeTab}"]`);
+        if (activeButton) {
+            activeButton.classList.remove('border-transparent', 'text-gray-500');
+            activeButton.classList.add('border-indigo-500', 'text-indigo-600');
+        }
+    });
+</script>
+{% endblock %}

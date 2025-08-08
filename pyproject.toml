@@ -1,0 +1,43 @@
+[project]
+name = "initech-user-management-dashboard"
+version = "0.1.0"
+description = "FastAPI application for user and role CRUD operations"
+requires-python = ">=3.9"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
+    "sqlalchemy>=2.0.35",
+    "pydantic>=2.10.1",
+    "pydantic-settings>=2.6.1",
+    "python-multipart>=0.0.18",
+    "jinja2>=3.1.4",
+    "python-ksuid>=1.3",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.3.3", "httpx>=0.28.0", "ruff>=0.8.0", "mypy>=1.13.0"]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "C4", "SIM", "RUF"]
+ignore = ["E501", "B008"]  # B008: FastAPI requires Depends in defaults
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+plugins = ["pydantic.mypy"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"

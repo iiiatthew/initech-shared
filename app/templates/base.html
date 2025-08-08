@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Initech User Management{% endblock %}</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      defer
+      src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+  </head>
+  <body class="bg-gray-50">
+    <div class="min-h-screen">
+      <nav class="bg-white shadow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex justify-between h-16">
+            <div class="flex">
+              <div class="flex-shrink-0 flex items-center">
+                <img
+                  src="/static/images/initech.png"
+                  alt="Initech Logo"
+                  class="h-16 w-auto mr-3"
+                />
+                <h1 class="text-xl font-semibold">
+                  Initech User Management Dashboard
+                </h1>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <main>{% block content %}{% endblock %}</main>
+    </div>
+
+    {% block scripts %}{% endblock %}
+  </body>
+</html>
